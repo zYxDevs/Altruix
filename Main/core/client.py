@@ -98,7 +98,7 @@ class AltruixClient:
   / ___ \\| | |_| |  | |_| | |>  <
  /_/   \\_\\_|\\__|_|   \\__,_|_/_/\\_\\
 
- (C) Project-Altruix 2021-{datetime.today().year}
+ (C) Project-Altruix 2021-{datetime.now().year}
         """
 
     @property
@@ -575,7 +575,7 @@ class AltruixClient:
                     ).start()
                     client.myself = await client.get_me()
                     self.clients.append(client)
-                    if not client.myself.id == self.config.OWNER_ID:
+                    if client.myself.id != self.config.OWNER_ID:
                         self.ourselves.append(client.myself)
                     self.log(f"[{count + 1}/{len(string_sessions)}] Sessions Loaded.")
                 except Exception as err:
@@ -612,7 +612,7 @@ class AltruixClient:
         await app.start()
         session_user_info = await app.get_me()
         app.myself = session_user_info
-        if not app.myself.id == self.config.OWNER_ID:
+        if app.myself.id != self.config.OWNER_ID:
             self.ourselves.append(session_user_info)
         self.training_wheels_protocol = False
         await self.load_all_modules()

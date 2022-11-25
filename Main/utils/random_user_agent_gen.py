@@ -57,9 +57,9 @@ def gen_random_useragent():
     elif browser == "firefox":
         year = str(random.randint(2000, 2012))
         month = random.randint(1, 12)
-        month = f"0{str(month)}" if month < 10 else str(month)
         day = random.randint(1, 30)
-        day = f"0{str(day)}" if day < 10 else str(day)
+        day = f"0{day}" if day < 10 else str(day)
+        month = f"0{month}" if month < 10 else str(month)
         gecko = year + month + day
         version = random.choice(
             [
@@ -80,19 +80,10 @@ def gen_random_useragent():
                 "15.0",
             ]
         )
-        return (
-            "Mozilla/5.0 ("
-            + gen_os
-            + "; rv:"
-            + version
-            + ") Gecko/"
-            + gecko
-            + " Firefox/"
-            + version
-        )
+        return f"Mozilla/5.0 ({gen_os}; rv:{version}) Gecko/{gecko} Firefox/{version}"
     elif browser == "ie":
-        version = f"{str(random.randint(1, 10))}.0"
-        engine = f"{str(random.randint(1, 5))}.0"
+        version = f"{random.randint(1, 10)}.0"
+        engine = f"{random.randint(1, 5)}.0"
         if option := random.choice([True, False]):
             token = (
                 random.choice(

@@ -57,9 +57,7 @@ def isValidRGB(RGB):
         return False, ()
     if G < 0 or G > 255:
         return False, ()
-    if B < 0 or B > 255:
-        return False, ()
-    return True, (R, G, B)
+    return (False, ()) if B < 0 or B > 255 else (True, (R, G, B))
 
 
 def splitter(input_):
@@ -74,21 +72,31 @@ def splitter(input_):
     elif len_ == 2:
         if input_[0] == "":
             return "Altruix", 500, choice(colours)
-        if input_[1].isnumeric():
-            return input_[0], int(input_[1]), choice(colours)
-        return input_[0], 500, choice(colours)
+        else:
+            return (
+                (input_[0], int(input_[1]), choice(colours))
+                if input_[1].isnumeric()
+                else (input_[0], 500, choice(colours))
+            )
+
     if input_[0] == "":
         return "Altruix", 500, choice(colours)
-    if not input_[1].isnumeric():
-        return (
+    return (
+        (
+            input_[0],
+            int(input_[1]),
+            isValidRGB(input_[2])[1]
+            if isValidRGB(input_[2])
+            else choice(colours),
+        )
+        if input_[1].isnumeric()
+        else (
             input_[0],
             500,
-            isValidRGB(input_[2])[1] if isValidRGB(input_[2]) else choice(colours),
+            isValidRGB(input_[2])[1]
+            if isValidRGB(input_[2])
+            else choice(colours),
         )
-    return (
-        input_[0],
-        int(input_[1]),
-        isValidRGB(input_[2])[1] if isValidRGB(input_[2]) else choice(colours),
     )
 
 

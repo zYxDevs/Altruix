@@ -76,7 +76,7 @@ async def sessions_menu_cb_handler(c: Client, cb: CallbackQuery):
     buttons, has_next, total_pages = get_sessions_buttons(page)
     buttons = arrange_buttons(buttons, 3)
     last_col = []
-    if not page == 1:
+    if page != 1:
         last_col.append(InlineKeyboardButton("Previous", f"sessions_list_{page - 1}"))
     last_col.append(
         InlineKeyboardButton(f"🔙 [{page}/{total_pages or 1}]", "settings_menu")
@@ -95,13 +95,8 @@ async def sessions_info_cb_handler(c: Client, cb: CallbackQuery):
     index = int(cb.matches[0].group(1))
     callback_page = int(cb.matches[0].group(1))
     session_info = Altruix.clients[index].myself
-    txt = "<b>Session info</b>\n\n<b>First name:</b> {}\n<b>Last name:</b> {}\n<b>DC ID:</b> <code>{}</code>\n<b>Username:</b> @{}\n<b>Is SCAM:</b> <code>{}</code>".format(
-        session_info.first_name,
-        session_info.last_name,
-        session_info.dc_id,
-        session_info.username,
-        session_info.is_scam,
-    )
+    txt = f"<b>Session info</b>\n\n<b>First name:</b> {session_info.first_name}\n<b>Last name:</b> {session_info.last_name}\n<b>DC ID:</b> <code>{session_info.dc_id}</code>\n<b>Username:</b> @{session_info.username}\n<b>Is SCAM:</b> <code>{session_info.is_scam}</code>"
+
     await cb.message.edit(
         text=txt,
         reply_markup=InlineKeyboardMarkup(

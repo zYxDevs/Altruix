@@ -235,11 +235,12 @@ class Message:
             return await self.delete(**kwargs)
 
     async def delete_if_sudo(self, **kwargs):
-        sudo_ = Altruix.config.SUDO_USERS
-        if self.from_user and self.from_user.is_self:
-            return
-        if self.from_user and self.from_user.id in sudo_:
-            return await self.delete(**kwargs)
+        if self.from_user:
+            if self.from_user.is_self:
+                return
+            sudo_ = Altruix.config.SUDO_USERS
+            if self.from_user.id in sudo_:
+                return await self.delete(**kwargs)
 
     @property
     def user_input(self):

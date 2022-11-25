@@ -105,7 +105,7 @@ async def evaluate_command_handler(c: Client, m: Message):
             msg = await c.send_message(
                 Altruix.log_chat, f"{cmd_} \n<b>Pasted to :</b> {url}"
             )
-        elif "p" in user_args or len(final_output) >= TGLIMITS.MESSAGE_TEXT:
+        elif len(final_output) >= TGLIMITS.MESSAGE_TEXT:
             file_path = f"out_bash_{m.id}.txt"
             async with aiofiles.open(file_path, "w") as f:
                 await f.write(final_output)

@@ -57,6 +57,6 @@ async def send_mention_log_handler(c: Client, m: RawMessage):
             Altruix.log_chat,
             f"{c.myself.mention(style=enums.ParseMode.HTML)} [\u2063]({m.link}) was mentioned in <a href={link}>{m.chat.title}</a>",
             reply_markup=InlineKeyboardMarkup(
-                [[InlineKeyboardButton(f"🔗 Link", url=m.link)]]
+                [[InlineKeyboardButton("🔗 Link", url=m.link)]]
             ),
         )

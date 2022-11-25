@@ -47,13 +47,12 @@ async def approve_user_pm_permit_func(c: Client, m: Message):
     user_info = await pm_permit_col.find_one({"user_id": user_id})
     if not user_info:
         await pm_permit_col.insert_one({"user_id": user_id, "approved": True})
+    elif user_info.get("approved", False):
+        await pm_permit_col.update_one(
+            {"user_id": user_id}, {"$set": {"approved": True}}
+        )
     else:
-        if user_info.get("approved", False):
-            await pm_permit_col.update_one(
-                {"user_id": user_id}, {"$set": {"approved": True}}
-            )
-        else:
-            return await msg.edit_msg("ALREADY_APPROVED")
+        return await msg.edit_msg("ALREADY_APPROVED")
     await msg.edit_msg("APPROVED", string_args=(user_.mention))
 
 
@@ -96,13 +95,12 @@ async def disapprove_user_pm_permit_func(c: Client, m: Message):
                 "is_global": False,
             }
         )
+    elif user_info.get("approved", False):
+        return await msg.edit_msg("ALREADY_DISAPPROVED")
     else:
-        if user_info.get("approved", False):
-            return await msg.edit_msg("ALREADY_DISAPPROVED")
-        else:
-            await pm_permit_col.update_one(
-                {"user_id": user_id}, {"$set": {"approved": False}}
-            )
+        await pm_permit_col.update_one(
+            {"user_id": user_id}, {"$set": {"approved": False}}
+        )
     await msg.edit_msg("DIS_APPROVED", string_args=(user_.mention))
 
 
@@ -229,9 +227,7 @@ async def pm_permit_command_handler(c: Client, m: Message):
         await m.reply_msg("Pm Security Status: `Enabled`")
     else:
         await m.reply_msg(
-            "Current PM security status: <code>{}</code>".format(
-                "Enabled" if await Altruix.config.get_env("PM_PERMIT") else "Disabled"
-            )
+            f'Current PM security status: <code>{"Enabled" if await Altruix.config.get_env("PM_PERMIT") else "Disabled"}</code>'
         )
 
 
@@ -251,7 +247,7 @@ async def pm_permit_new_message_listener_handler(c: Client, m: Message):
     ):
         return
 
-    if m.from_user.is_self or m.from_user.is_contact or m.from_user.is_bot:
+    if m.from_user.is_self:
         return
     pm_warns_count = int(pm_permit_warning_cache.get(c.myself.id, 3))
     if (

@@ -213,9 +213,7 @@ class Config(BaseConfig):
         env_ = getenv(env_key)
         if env_ and as_list:
             return list(env_.split("|"))
-        if env_ and "|" in env_:
-            return list(env_.split("|"))
-        return env_
+        return list(env_.split("|")) if env_ and "|" in env_ else env_
 
     async def get_env_from_db(self, env_name):
         if var := await self.env_col.find_one({"_id": env_name}):
@@ -329,6 +327,4 @@ class Config(BaseConfig):
         )
 
     async def get_pm_sts(self):
-        if await self.get_env_from_db("PM_PERMIT"):
-            return True
-        return False
+        return bool(await self.get_env_from_db("PM_PERMIT"))

@@ -77,12 +77,16 @@ async def ping_inline_handler(c: Client, iq: InlineQuery):
                 title=f"{pf['ping_emoji1']} Pong!",
                 description=f"{ms} ms\n{uptime}",
                 input_message_content=InputTextMessageContent(
-                    "<b>{} Pong!</b>\n<code>{} ms</code>\n<b>{} Uptime:</b> <code>{}</code>".format(
-                        pf["ping_emoji1"], ms, pf["ping_emoji2"], uptime
-                    )
+                    f'<b>{pf["ping_emoji1"]} Pong!</b>\n<code>{ms} ms</code>\n<b>{pf["ping_emoji2"]} Uptime:</b> <code>{uptime}</code>'
                 ),
                 reply_markup=InlineKeyboardMarkup(
-                    [[InlineKeyboardButton(f"{pf['ping_emoji1']} Ping", "ping")]]
+                    [
+                        [
+                            InlineKeyboardButton(
+                                f"{pf['ping_emoji1']} Ping", "ping"
+                            )
+                        ]
+                    ]
                 ),
             )
         ],

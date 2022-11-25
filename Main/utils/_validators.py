@@ -102,8 +102,14 @@ def is_url(value, public=False):
     if value is None:
         return False
     result = pattern.match(value)
-    if not public:
-        return result
-    return result and not any(
-        (result.groupdict().get(key) for key in ("private_ip", "private_host"))
+    return (
+        result
+        and not any(
+            (
+                result.groupdict().get(key)
+                for key in ("private_ip", "private_host")
+            )
+        )
+        if public
+        else result
     )

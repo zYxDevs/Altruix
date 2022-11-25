@@ -46,9 +46,7 @@ def rename_file(file_name, new_file_name):
     if not os.path.exists(file_name):
         return False
     os.rename(file_name, new_file_name)
-    if not os.path.exists(new_file_name):
-        return False
-    return True
+    return bool(os.path.exists(new_file_name))
 
 
 @run_in_exc

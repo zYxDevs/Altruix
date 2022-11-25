@@ -141,9 +141,7 @@ class reverse_search_in_google:
 
     async def reverse(self):
         url = await self.get_img_search_result()
-        if not url:
-            return None
-        return await self.ParseSauce(url)
+        return await self.ParseSauce(url) if url else None
 
     @run_in_exc
     def get_img_search_result(self):

@@ -33,12 +33,10 @@ async def lang_modify(c: Client, m):
 
 @Altruix.register_on_cmd(["help"], bot_mode_unsupported=True)
 async def help_normal(c: Client, m):
-    cmd_lists = Altruix._command_help_message_data
-    user_input = m.user_input
-    chat = m.chat.id
-    rm = m.reply_to_message
     if (not c.myself.is_bot) and "-basic" not in m.user_args:
         results = await c.get_inline_bot_results(Altruix.bot_info.username, "help")
+        chat = m.chat.id
+        rm = m.reply_to_message
         await c.send_inline_bot_result(
             chat_id=chat,
             query_id=results.query_id,
@@ -47,6 +45,8 @@ async def help_normal(c: Client, m):
         )
         return await m.delete_if_self()
     else:
+        cmd_lists = Altruix._command_help_message_data
+        user_input = m.user_input
         if user_input and cmd_lists.get(user_input):
             await m.handle_message(
                 f"<b>Help for</b> <code>{user_input}</code>\n\n{cmd_lists[user_input].strip()}"
